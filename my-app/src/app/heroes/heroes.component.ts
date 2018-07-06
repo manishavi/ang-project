@@ -18,11 +18,11 @@ export class HeroesComponent implements OnInit {
     this.getHeroes();
   }
 
-onSelect(hero: Hero): void {
-  this.selectedHero = hero;
-}
-
-getHeroes(): void {
-    this.heroes = this.heroService.getHeroes();
+  onSelect(hero: Hero): void {
+    this.selectedHero = hero;
   }
+
+  getHeroes(): void {
+      this.heroes = this.heroService.getHeroes();
+    }
 }
