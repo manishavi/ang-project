@@ -50,15 +50,25 @@ export class HeroService {
   }
 
   /** DELETE: delete the hero from the server */
-deleteHero (hero: Hero | number): Observable<Hero> {
-  const id = typeof hero === 'number' ? hero : hero.id;
-  const url = `${this.heroesUrl}/${id}`;
+  deleteHero (hero: Hero | number): Observable<Hero> {
+    const id = typeof hero === 'number' ? hero : hero.id;
+    const url = `${this.heroesUrl}/${id}`;
 
-  return this.http.delete<Hero>(url, httpOptions).pipe(
-    tap(_ => this.log(`deleted hero id=${id}`)),
-    catchError(this.handleError<Hero>('deleteHero'))
-  );
-}
+    return this.http.delete<Hero>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
+
+  searchHEroes(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
+      tap(_ => this.log(`found heroes matching "${term}"`)),
+      catchError(this.handleError<Hero[]>('serchHeroes', []))
+    );
+  }
 
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
